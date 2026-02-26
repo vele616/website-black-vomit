@@ -1,38 +1,36 @@
 # Terminology
 
-Common project terms and their meaning.
+Common project terms and current meanings.
 
 Terms
-- App Router - Next.js routing model where pages live in `src/app/`.
-- Root Layout - The shared shell in `src/app/layout.tsx` that wraps all pages.
-- Page - A route entry such as `src/app/page.tsx`.
-- Global Styles - Tailwind base layer and custom CSS in `src/app/globals.css`.
-- Component - Reusable UI module under `src/components/`.
-- Header Toggle Menu - Mobile-only hamburger trigger in `src/components/Header.tsx` that toggles a full-width overlay menu.
-- Navigation Orientation - `orijentation` prop in `Navigation` selecting `row` (desktop) or `col` (mobile overlay) layout.
+- App Router - Next.js file-based routing rooted in `src/app/`.
+- Root Layout - Global wrapper in `src/app/layout.tsx` that sets fonts, metadata, and global CSS import.
+- Home Page - `src/app/page.tsx`, currently the only route UI with `Header`, `main`, and `Footer`.
+- Theme Tokens - CSS variables in `src/app/globals.css` exposed through Tailwind v4 `@theme inline`.
+- Mobile Nav Toggle - `mobileOpen` state in `src/components/Header.tsx` controlling collapsed/expanded mobile links.
+- Brand Surface - The dark header background class `bg-brand-900` used as the top bar visual anchor.
 
 Related
 - [Summary](summary.md)
 - [Practices](practices.md)
 - [Current Plan](plans/current-plan.md)
-- [Internationalization](i18n/summary.md)
+- [UI Summary](ui/summary.md)
 
 ```mermaid
 graph LR
-  AppRouter --> Layout
-  Layout --> Page
-  Layout --> Component
-  HeaderToggleMenu --> NavigationOrientation
+  AppRouter --> RootLayout
+  RootLayout --> HomePage
+  HomePage --> Header
+  HomePage --> Footer
+  Header --> MobileNavToggle
 ```
 
 ```ts
-export const routing = {
-  locales: ["hr", "en"],
-  defaultLocale: "hr",
-  localePrefix: "as-needed"
-};
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 ```
 
 Contracts
-- Components under `src/components/` are intended for reuse across pages.
-- Layout owns global page chrome (header/footer).
+- `src/components/` is the reusable UI boundary for route files.
+- `src/app/globals.css` remains the single source for global token definitions.

@@ -14,10 +14,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Black Vomit Art",
+  title: "BV Dizajn",
   description:
-    "Black Vomit creates custom cover artwork and dark illustrations.",
-};
+    "BV Dizajn is a contemporary artist presenting a curated portfolio of original works and visual explorations.",
+  icons: {
+    icon: '/favicon.png',
+    apple: '/favicon.png',
+  }
+}
 
 export default function RootLayout({
   children,
