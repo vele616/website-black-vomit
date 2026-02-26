@@ -1,57 +1,124 @@
 "use client";
 
+import Link from "next/link";
+import { Mail } from "lucide-react";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { TwitterIcon } from "./icons/TwitterIcon";
+import { InstagramIcon } from "./icons/InstagramIcon";
+import { usePathname } from "next/navigation";
+
+const navLinks = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+];
+
+const socialLinks = [
+  { icon: InstagramIcon, href: "#", label: "Instagram" },
+  { icon: Mail, href: "#", label: "Email" },
+  { icon: TwitterIcon, href: "#", label: "Twitter" },
+];
 
 export function Header() {
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-brand-900">
-      <div className="">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <nav className="hidden items-center gap-8 md:flex">
-            <a href="#about">About</a>
-            <a href="#porfoleo">Porfoleo</a>
-            <a href="#contact">Contact</a>
-          </nav>
+    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md">
+      <div className="mx-auto flex max-w-350 items-center justify-between px-6 py-5 lg:px-10">
+        <Link
+          href="/"
+          className="text-lg font-bold tracking-[0.15em] text-foreground uppercase"
+        >
+          Black Vomit
+        </Link>
+        <nav
+          className="hidden items-center gap-8 md:flex"
+          aria-label="Main navigation"
+        >
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
 
-          <div className="flex items-center gap-3 md:hidden">
-            <button
-              className="text-ink-900"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label={mobileOpen ? "closeMenu" : "openMenu"}
-            >
-              {mobileOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={`text-sm tracking-wide transition-colors hover:text-foreground ${
+                  isActive
+                    ? "text-foreground underline underline-offset-4"
+                    : "text-muted-foreground"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+
+          <div className="flex items-center gap-4 border-l border-border pl-6">
+            {socialLinks.map((social) => (
+              <Link
+                key={social.label}
+                href={social.href}
+                className="text-foreground transition-colors hover:text-foreground"
+                aria-label={social.label}
+              >
+                <social.icon className="h-6 w-6" strokeWidth={1.5} />
+              </Link>
+            ))}
           </div>
-        </div>
-      </div>
-
-      <div
-        className={`origin-top overflow-hidden transition-[max-height,opacity,transform] duration-300 ease-in-out md:hidden ${
-          mobileOpen
-            ? "pointer-events-auto max-h-80 scale-y-100 opacity-100"
-            : "pointer-events-none max-h-0 scale-y-95 opacity-0"
-        }`}
-        aria-hidden={!mobileOpen}
-      >
-        <nav className="flex flex-col items-center gap-4 px-6 py-6 text-left">
-          <a href="#about" onClick={() => setMobileOpen(false)}>
-            <div className="m-auto w-fit">About</div>
-          </a>
-          <a href="#services" onClick={() => setMobileOpen(false)}>
-            <div className="m-auto w-fit">Porfoleo</div>
-          </a>
-          <a href="#contact" onClick={() => setMobileOpen(false)}>
-            <div>Contact</div>
-          </a>
         </nav>
+
+        <button
+          className="text-foreground md:hidden"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? (
+            <X className="h-6 w-6" />
+          ) : (
+            <Menu className="h-6 w-6" />
+          )}
+        </button>
       </div>
+      {mobileOpen && (
+        <nav
+          className="border-t border-border bg-background px-6 pb-6 pt-4 md:hidden"
+          aria-label="Mobile navigation"
+        >
+          <div className="flex flex-col gap-4">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+
+              return (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`text-sm tracking-wide transition-colors ${
+                    isActive
+                      ? "text-foreground font-medium"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </div>
+          <div className="mt-4 flex items-center gap-4 border-t border-border pt-4">
+            {socialLinks.map((social) => (
+              <Link
+                key={social.label}
+                href={social.href}
+                className="text-muted-foreground transition-colors hover:text-foreground"
+                aria-label={social.label}
+              >
+                <social.icon className="h-4.5 w-4.5" strokeWidth={1.5} />
+              </Link>
+            ))}
+          </div>
+        </nav>
+      )}
     </header>
   );
 }
