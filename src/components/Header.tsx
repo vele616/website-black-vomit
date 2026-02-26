@@ -94,7 +94,7 @@ export function Header() {
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className={`text-sm tracking-wide transition-colors ${
+                  className={`w-full text-center text-sm tracking-wide transition-colors ${
                     isActive
                       ? "text-foreground font-medium"
                       : "text-muted-foreground"
