@@ -1,22 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { Mail } from "lucide-react";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { TwitterIcon } from "./icons/TwitterIcon";
-import { InstagramIcon } from "./icons/InstagramIcon";
 import { usePathname } from "next/navigation";
+import { SocialLinks } from "./SocialLinks";
 
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-];
-
-const socialLinks = [
-  { icon: InstagramIcon, href: "#", label: "Instagram" },
-  { icon: Mail, href: "#", label: "Email" },
-  { icon: TwitterIcon, href: "#", label: "Twitter" },
 ];
 
 export function Header() {
@@ -55,16 +47,7 @@ export function Header() {
           })}
 
           <div className="flex items-center gap-4 border-l border-border pl-6">
-            {socialLinks.map((social) => (
-              <Link
-                key={social.label}
-                href={social.href}
-                className="text-foreground transition-colors hover:text-foreground"
-                aria-label={social.label}
-              >
-                <social.icon className="h-6 w-6" strokeWidth={1.5} />
-              </Link>
-            ))}
+            <SocialLinks />
           </div>
         </nav>
 
@@ -105,17 +88,8 @@ export function Header() {
               );
             })}
           </div>
-          <div className="mt-4 flex items-center justify-center gap-4 border-t border-border pt-4">
-            {socialLinks.map((social) => (
-              <Link
-                key={social.label}
-                href={social.href}
-                className="text-foreground transition-colors"
-                aria-label={social.label}
-              >
-                <social.icon className="h-6 w-6" strokeWidth={1.5} />
-              </Link>
-            ))}
+           <div className="mt-4 flex items-center justify-center gap-4 border-t border-border pt-4">
+            <SocialLinks />
           </div>
         </nav>
       )}
