@@ -1,12 +1,7 @@
-import { Footer } from "../components/Footer";
-import { Header } from "../components/Header";
-
 export default function Home() {
   return (
-    <>
-      <Header />
-      <main>WIP</main>
-      <Footer />
-    </>
+    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+      WIP
+    </div>
   );
 }

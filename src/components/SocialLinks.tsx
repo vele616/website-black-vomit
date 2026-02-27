@@ -11,13 +11,13 @@ const socialLinks = [
 
 export function SocialLinks() {
   return (
-    <div className="mt-4 flex items-center justify-center gap-4 border-t border-border pt-4 md:border-t-0">
+    <div className="flex gap-4">
       {socialLinks.map((social) => (
         <Link
-          key={social.label}
-          href={social.href}
-          className="text-foreground transition-colors"
-          aria-label={social.label}
+        key={social.label}
+        href={social.href}
+        className="text-foreground transition-colors hover:text-foreground"
+        aria-label={social.label}
         >
           <social.icon className="h-6 w-6" strokeWidth={1.5} />
         </Link>
