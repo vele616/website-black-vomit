@@ -8,5 +8,4 @@ export interface ArtworkItem {
   aspectRatioValue?: string
   width: number
   height: number
-  tileClass: string
 }
