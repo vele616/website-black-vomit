@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div id="about" className="scroll-mt-20 bg-background py-10 lg:py-12">
-      <div className="grid gap-14 lg:grid-cols-2 lg:items-center mx-auto max-w-350 px-4 pb-12 pt-16 lg:px-10">
+      <div className="grid gap-14 lg:grid-cols-2 lg:items-end mx-auto max-w-350 px-4 py-12 lg:px-10">
         <div className="w-full">
           <p className="text-base leading-relaxed p-4 text-foreground">
             I am a Croatian artist with a background in art history and
