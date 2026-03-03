@@ -65,7 +65,7 @@ export function Header() {
       </div>
       {mobileOpen && (
         <nav
-          className="fixed left-0 right-0 top-19 z-50 border-t border-border bg-background px-6 pb-6 pt-4 md:hidden"
+          className="fixed left-0 right-0 top-17 z-50 border-t border-border bg-background px-6 pb-6 pt-4 md:hidden"
           aria-label="Mobile navigation"
         >
           <div className="flex flex-col items-center gap-4">
