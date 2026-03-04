@@ -1,4 +1,4 @@
-# Project Plan - BV Dizajn Website
+# Project Plan - Black Vomit Website
 
 ## Current Snapshot
 

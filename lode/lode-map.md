@@ -11,7 +11,27 @@ Plans
 - [Current Plan](plans/current-plan.md)
 
 Domains
-- [UI Summary](ui/summary.md)
+- Architecture
+  - [Architecture Summary](architecture/summary.md)
+- Routing
+  - [Routing Summary](routing/summary.md)
+- UI
+  - [UI Summary](ui/summary.md)
+  - [Header Navigation](ui/header-navigation.md)
+  - [Portfolio Grid](ui/portfolio-grid.md)
+  - [Lightbox](ui/lightbox.md)
+  - [About Page](ui/about-page.md)
+- Data
+  - [Artworks Catalog](data/artworks-catalog.md)
+- Components
+  - [Masonry Engine](components/masonry-engine.md)
+  - [Shared UI Primitives](components/shared-ui-primitives.md)
+  - [Social Links Component](components/social-links.md)
+- Assets
+  - [Static Assets](assets/static-assets.md)
+- Ops
+  - [Tooling and Build](ops/tooling-and-build.md)
+  - [Quality Status](ops/quality-status.md)
 
 Scratch
 - `tmp/` (session scraps, git-ignored)
@@ -22,7 +42,20 @@ graph TD
   LodeMap --> Terminology["terminology.md"]
   LodeMap --> Practices["practices.md"]
   LodeMap --> Plans["plans/current-plan.md"]
+  LodeMap --> Architecture["architecture/summary.md"]
+  LodeMap --> Routing["routing/summary.md"]
   LodeMap --> UI["ui/summary.md"]
+  LodeMap --> HeaderNav["ui/header-navigation.md"]
+  LodeMap --> PortfolioGrid["ui/portfolio-grid.md"]
+  LodeMap --> Lightbox["ui/lightbox.md"]
+  LodeMap --> AboutPage["ui/about-page.md"]
+  LodeMap --> Data["data/artworks-catalog.md"]
+  LodeMap --> Masonry["components/masonry-engine.md"]
+  LodeMap --> SharedUI["components/shared-ui-primitives.md"]
+  LodeMap --> SocialLinks["components/social-links.md"]
+  LodeMap --> Assets["assets/static-assets.md"]
+  LodeMap --> Ops["ops/tooling-and-build.md"]
+  LodeMap --> Quality["ops/quality-status.md"]
   LodeMap --> Tmp["tmp/"]
 ```
 

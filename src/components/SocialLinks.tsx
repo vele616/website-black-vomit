@@ -15,18 +15,22 @@ const socialLinks = [
 
 export function SocialLinks() {
   return (
-    <div className="flex gap-4">
+    <div className="flex items-center gap-4">
       {socialLinks.map((social) => {
         const isExternal = Boolean(social.href?.startsWith("http"));
         return (
           <Link
             key={social.label}
             href={social.href}
-            className="text-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center justify-center text-foreground transition-colors hover:text-foreground"
             aria-label={social.label}
             target={isExternal ? "_blank" : undefined}
           >
-            <social.icon className="h-6 w-6" strokeWidth={1.5} />
+            {social.label === "Email" ? (
+              <social.icon className="h-8 w-8" strokeWidth={1.7} />
+            ) : (
+              <social.icon className="h-6 w-6" strokeWidth={1.5} />
+            )}
           </Link>
         );
       })}

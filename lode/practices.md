@@ -7,12 +7,16 @@ Related
 - [Terminology](terminology.md)
 - [Current Plan](plans/current-plan.md)
 - [UI Summary](ui/summary.md)
+- [Architecture Summary](architecture/summary.md)
+- [Tooling and Build](ops/tooling-and-build.md)
 
 ```mermaid
 flowchart TD
-  RootLayout["src/app/layout.tsx"] --> Home["src/app/page.tsx"]
-  Home --> Header["src/components/Header.tsx"]
-  Home --> Footer["src/components/Footer.tsx"]
+  RootLayout["src/app/layout.tsx"] --> Header["src/components/Header.tsx"]
+  RootLayout --> Home["src/app/page.tsx"]
+  RootLayout --> About["src/app/about/page.tsx"]
+  RootLayout --> Footer["src/components/Footer.tsx"]
+  Home --> PortfolioGrid["src/components/PortfolioGrid.tsx"]
   RootLayout --> GlobalStyles["src/app/globals.css"]
 ```
 
@@ -25,15 +29,16 @@ const [mobileOpen, setMobileOpen] = useState(false);
 ```
 
 Practices
-- Keep route-level assembly in `src/app/page.tsx` and keep reusable chrome in `src/components/`.
-- Use Tailwind utility classes as default styling mechanism and reserve global tokens for `src/app/globals.css`.
-- Enable animation utilities in `src/app/globals.css` via `@plugin 'tailwindcss-animate';` for Turbopack-compatible Tailwind animation classes.
-- Keep header behavior client-side only (`"use client"`) when using local interaction state.
-- Use semantic containers (`header`, `main`, `footer`) even while page content is still in placeholder mode.
-- Keep iconography sourced from `lucide-react` to maintain consistent stroke style.
+- Keep route files thin (`src/app/page.tsx` delegates to `PortfolioGrid`) and place substantial UI logic in `src/components/`.
+- Use Tailwind utility classes for component styling; keep semantic design tokens centralized in `src/app/globals.css`.
+- Mount global chrome (`Header`, `Footer`, `Toaster`) in the root layout so all routes share navigation and social links.
+- Keep interactive/scroll-sensitive components client-side (`"use client"`) with state isolated per component.
+- Store artwork data in typed arrays (`ArtworkItem[]`) under `src/data/` instead of embedding data in route files.
+- Prefer shared building blocks (`SocialLinks`) to avoid duplicate link targets across header/footer.
 
 Invariants
 - `src/app/layout.tsx` always imports `src/app/globals.css`.
 - `src/app/globals.css` defines Tailwind animation support with `@plugin 'tailwindcss-animate';`.
-- `Header` is fixed (`fixed top-0 left-0 right-0 z-50`) and therefore independent from page scroll.
-- Mobile menu visibility is controlled by classes derived from a single boolean (`mobileOpen`).
+- `Header` visibility and mobile drawer state are controlled inside `src/components/Header.tsx`.
+- `PortfolioGrid` selects modal content via a single `selectedArtwork` state object.
+- `src/components/custom/masonry.tsx` is the canonical masonry implementation used by the homepage.

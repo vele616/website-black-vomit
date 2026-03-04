@@ -1,6 +1,6 @@
-# BV Dizajn Website
+# Black Vomit Website
 
-This repository contains the current website shell for BV Dizajn, built with Next.js 16 (App Router), React 19, TypeScript, and Tailwind CSS v4.
+This repository contains the current website shell for Black Vomit, built with Next.js 16 (App Router), React 19, TypeScript, and Tailwind CSS v4.
 
 ## Current State
 

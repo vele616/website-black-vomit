@@ -16,12 +16,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BV Dizajn",
+  title: "Black Vomit",
   description:
-    "BV Dizajn is a contemporary artist presenting a curated portfolio of original works and visual explorations.",
+    "Black Vomit is a contemporary artist presenting a curated portfolio of original works and visual explorations.",
   icons: {
-    icon: "/favicon.png",
-    apple: "/favicon.png",
+    icon: "/logo2.png",
+    apple: "/logo2.png",
   },
 };
 
