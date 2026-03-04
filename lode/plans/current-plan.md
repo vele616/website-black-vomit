@@ -1,40 +1,40 @@
 # Current Plan
 
-Short-term implementation plan for the current `BV Dizajn` shell.
+Short-term plan for stabilizing and hardening the current portfolio implementation.
 
 Related
 - [Summary](../summary.md)
 - [Terminology](../terminology.md)
 - [Practices](../practices.md)
 - [UI Summary](../ui/summary.md)
+- [Routing Summary](../routing/summary.md)
+- [Data Summary](../data/artworks-catalog.md)
 - [Root Plan](../../plan.md)
 
 ```mermaid
 flowchart LR
-  IA["Define final information architecture"] --> Sections["Replace WIP with sections"]
-  Sections --> Links["Align nav href targets"]
-  Links --> Content["Wire real social/contact links"]
-  Content --> QA["Responsive + accessibility pass"]
+  Audit["Content and UX audit"] --> A11y["Accessibility pass"]
+  A11y --> Perf["Image/performance tuning"]
+  Perf --> QA["Cross-device QA"]
+  QA --> Deploy["Production release readiness"]
 ```
 
 ```tsx
 export default function Home() {
   return (
     <main>
-      <section id="about" />
-      <section id="portfolio" />
-      <section id="contact" />
+      <PortfolioGrid />
     </main>
   );
 }
 ```
 
 Plan
-1. Replace `WIP` in `src/app/page.tsx` with real homepage sections.
-2. Align section IDs with current header links (`about`, `portfolio`, `contact`) and remove the `porfoleo` typo.
-3. Replace `#` placeholders in footer social links with real destinations.
-4. Add content spacing offsets so fixed header does not cover in-page anchors.
-5. Run lint/build checks once content sections are added.
+1. Validate accessibility for icon-only links and lightbox keyboard interactions.
+2. Decide whether `src/components/ui/masonry.tsx` is needed, since `src/components/custom/masonry.tsx` is the active implementation.
+3. Add `rel="noreferrer noopener"` for external social links opened in new tabs.
+4. Tune image loading strategy (priorities, sizes, potential blur placeholders).
+5. Run lint/build/perf checks before deployment.
 
 Invariants
 - Home page remains the primary route entry point.

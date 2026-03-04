@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { Masonry, MasonryItem } from "@/components/custom/masonry";
 import { artworks } from "@/data/artworks";
@@ -14,6 +14,21 @@ export function PortfolioGrid() {
   const portraitFallbacks = ["4 / 5", "3 / 4", "5 / 7"];
   const squareFallbacks = ["1 / 1", "6 / 7"];
   const landscapeFallbacks = ["7 / 5", "3 / 2"];
+
+  useEffect(() => {
+    if (!selectedArtwork) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSelectedArtwork(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedArtwork]);
 
   return (
     <>
@@ -43,7 +58,7 @@ export function PortfolioGrid() {
                     asChild
                   >
                     <button
-                      className="group relative w-full overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+                      className="group relative w-full cursor-pointer overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
                       style={{ aspectRatio }}
                       onClick={() => setSelectedArtwork(artwork)}
                       aria-label={`View ${artwork.title}`}
