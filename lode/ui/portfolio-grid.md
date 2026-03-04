@@ -1,6 +1,6 @@
 # Portfolio Grid
 
-`PortfolioGrid` is the homepage feature component that maps typed artwork data into interactive masonry cards with image overlays, responsive columns, and click-to-open detail preview with index-based lightbox navigation.
+`PortfolioGrid` is the homepage feature component that maps typed artwork data into interactive masonry cards with image overlays, responsive columns, and click-to-open detail preview through `yet-another-react-lightbox` with controlled index state.
 
 Related
 - [summary.md](summary.md)
@@ -14,7 +14,7 @@ flowchart TD
   Map --> Card["button + next/image"]
   Card --> Overlay["title/medium/year overlay"]
   Card --> Select["setSelectedIndex(index)"]
-  Select --> Lightbox["conditional modal render"]
+  Select --> Lightbox["yet-another-react-lightbox open/index"]
 ```
 
 ```tsx
@@ -29,13 +29,13 @@ Contracts
 - Each card is a keyboard-focusable button with `aria-label`.
 - Aspect ratio is always set per card using explicit value or category fallback.
 - Masonry children are wrapped in `MasonryItem asChild` for positioning.
-- Lightbox selection is index-based so previous/next navigation can wrap across the whole dataset.
+- Lightbox selection is index-based, and `on.view` keeps the active slide index synced back to component state.
 
 Invariants
 - Grid uses `columnWidth={420}` and `maxColumnCount={3}` with 24px column/row gaps.
 - Overlay metadata reveals on hover at `sm` and above, always visible on smaller screens.
 - Card interactions are local client state only and do not mutate data source.
-- Opening a card sets a stable index that drives keyboard (`ArrowLeft`/`ArrowRight`), desktop side-arrow clicks, and mobile swipe navigation in the lightbox, with one shared full-width left/right slide transition plus synchronized metadata fade.
+- Opening a card sets a stable index for lightbox opening, and navigation/close interactions are handled by `yet-another-react-lightbox` internals.
 
 Rationale
 - A static array + client rendering provides fast startup and deterministic ordering.
