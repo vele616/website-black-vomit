@@ -1,6 +1,6 @@
 # Portfolio Grid
 
-`PortfolioGrid` is the homepage feature component that maps typed artwork data into interactive masonry cards with image overlays, responsive columns, and click-to-open detail preview.
+`PortfolioGrid` is the homepage feature component that maps typed artwork data into interactive masonry cards with image overlays, responsive columns, and click-to-open detail preview with index-based lightbox navigation.
 
 Related
 - [summary.md](summary.md)
@@ -13,14 +13,14 @@ flowchart TD
   Data["artworks[]"] --> Map["artworks.map(...)"]
   Map --> Card["button + next/image"]
   Card --> Overlay["title/medium/year overlay"]
-  Card --> Select["setSelectedArtwork(artwork)"]
+  Card --> Select["setSelectedIndex(index)"]
   Select --> Lightbox["conditional modal render"]
 ```
 
 ```tsx
 const aspectRatio = artwork.aspectRatioValue ?? aspectRatioFallback;
 
-<button style={{ aspectRatio }} onClick={() => setSelectedArtwork(artwork)}>
+<button style={{ aspectRatio }} onClick={() => setSelectedIndex(index)}>
   <Image src={artwork.src} alt={artwork.alt} fill className="object-cover" />
 </button>
 ```
@@ -29,11 +29,13 @@ Contracts
 - Each card is a keyboard-focusable button with `aria-label`.
 - Aspect ratio is always set per card using explicit value or category fallback.
 - Masonry children are wrapped in `MasonryItem asChild` for positioning.
+- Lightbox selection is index-based so previous/next navigation can wrap across the whole dataset.
 
 Invariants
 - Grid uses `columnWidth={420}` and `maxColumnCount={3}` with 24px column/row gaps.
 - Overlay metadata reveals on hover at `sm` and above, always visible on smaller screens.
 - Card interactions are local client state only and do not mutate data source.
+- Opening a card sets a stable index that drives keyboard (`ArrowLeft`/`ArrowRight`), desktop side-arrow clicks, and mobile swipe navigation in the lightbox, with one shared full-width left/right slide transition plus synchronized metadata fade.
 
 Rationale
 - A static array + client rendering provides fast startup and deterministic ordering.
