@@ -37,7 +37,7 @@ Invariants
 - About route portrait uses `/aboutme.jpg`.
 - About route also uses `/logo.png` above biography copy.
 - Metadata icons in `src/app/layout.tsx` use `/logo2.png` as favicon/apple icon.
-- There is no app-level `src/app/favicon.ico`; favicon comes from metadata icon paths.
+- `src/app/favicon.ico` exists and is generated from `/public/logo2.png` for browser favicon compatibility.
 - Unused default Next starter assets (`next.svg`, `vercel.svg`, etc.) still exist in `public/`.
 
 Rationale
