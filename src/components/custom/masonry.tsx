@@ -1354,6 +1354,7 @@ function MasonryViewport(props: DivProps) {
     shortestColumnSize < rangeEnd && measuredCount < itemCount;
 
   const positionedChildren: React.ReactElement[] = [];
+  const visibleItems: { index: number; element: React.ReactElement }[] = [];
 
   const visibleItemStyle = React.useMemo(
     (): React.CSSProperties => ({
@@ -1389,13 +1390,14 @@ function MasonryViewport(props: DivProps) {
       ...child.props.style,
     };
 
-    positionedChildren.push(
-      React.cloneElement(child, {
+    visibleItems.push({
+      index,
+      element: React.cloneElement(child, {
         key: child.key ?? index,
         ref: context.onItemRegister(index),
         style: itemStyle,
       }),
-    );
+    });
 
     if (stopIndex === undefined) {
       startIndex = index;
@@ -1405,6 +1407,11 @@ function MasonryViewport(props: DivProps) {
       stopIndex = Math.max(stopIndex, index);
     }
   });
+
+  visibleItems.sort((a, b) => a.index - b.index);
+  for (const item of visibleItems) {
+    positionedChildren.push(item.element);
+  }
 
   if (layoutOutdated && mounted) {
     const batchSize = Math.min(
