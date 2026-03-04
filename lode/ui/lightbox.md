@@ -1,6 +1,6 @@
 # Lightbox
 
-The lightbox is a conditional full-screen dialog rendered by `PortfolioGrid` when an artwork is selected; it shows a large image preview plus title/medium/year metadata, supports multiple close interactions, and allows cyclic previous/next navigation by keyboard arrows, desktop side controls, and mobile swipe gestures.
+The lightbox is powered by `yet-another-react-lightbox` inside `PortfolioGrid`; it opens from a selected artwork index, supports native swipe + keyboard navigation, loops through slides, and uses a custom slide renderer so title/medium/year metadata appears beside the image (matching the pre-library layout).
 
 Related
 - [portfolio-grid.md](portfolio-grid.md)
@@ -8,49 +8,55 @@ Related
 - [../practices.md](../practices.md)
 
 ```mermaid
-stateDiagram-v2
-  [*] --> Closed
-  Closed --> Open: card click
-  Open --> Open: ArrowLeft key
-  Open --> Open: ArrowRight key
-  Open --> Open: left/right control button click (desktop)
-  Open --> Open: swipe right/left (mobile)
-  Open --> Closed: backdrop click
-  Open --> Closed: close button click
-  Open --> Closed: Escape key
+flowchart TD
+  GridCard["Artwork card click"] --> SelectedIndex["setSelectedIndex(index)"]
+  SelectedIndex --> LightboxOpen["Lightbox open={selectedIndex !== null}"]
+  LightboxOpen --> ViewEvent["on.view updates selectedIndex"]
+  ViewEvent --> MetadataFade["metadata mounts hidden, then fades in"]
+  LightboxOpen --> CloseEvent["backdrop / Escape / close button"]
+  CloseEvent --> ClearedIndex["setSelectedIndex(null)"]
 ```
 
 ```tsx
-{selectedArtwork && (
-  <div className="fixed inset-0 z-100" onClick={() => setSelectedIndex(null)} role="dialog" aria-modal="true">
-    <button onClick={showPreviousArtwork} aria-label="Previous artwork" />
-    <button onClick={showNextArtwork} aria-label="Next artwork" />
-  </div>
-)}
+<Lightbox
+  open={selectedIndex !== null}
+  index={selectedIndex ?? 0}
+  close={() => setSelectedIndex(null)}
+  slides={slides}
+  carousel={{ finite: false }}
+  render={{ slide: ({ slide }) => <CustomSlide slide={slide} /> }}
+  on={{ view: ({ index }) => setSelectedIndex(index) }}
+/>
 ```
 
 Contracts
-- Dialog mount condition is `selectedArtwork !== null` where `selectedArtwork` derives from `selectedIndex`.
-- Backdrop click closes modal; inner content uses `stopPropagation()` to prevent accidental close.
-- Modal label includes selected artwork title for accessibility context.
-- `ArrowLeft` and `ArrowRight` key handlers cycle index with wrap-around (`0` goes to last; last goes to `0`).
-- Artwork preview area itself does not change selection on click.
-- Swipe input with a horizontal threshold triggers previous/next artwork on touch devices.
-- Previous/next navigation applies a brief horizontal push transition before and after index change across all viewport sizes.
-- Title/metadata text hides immediately on previous/next transition (no fade-out phase).
+- Modal mount condition is `selectedIndex !== null`.
+- `selectedIndex` is the single source of truth for the active slide.
+- Lightbox navigation updates local state through `on.view`, keeping card index and modal index synchronized.
+- Custom slide rendering keeps metadata in a separate side block instead of top/bottom caption slots.
+- Each slide reserves a fixed metadata rail width on `md+` (`md:w-52`), even when metadata is hidden, to prevent horizontal recenter jolts during navigation.
+- Metadata uses the original flow layout (below image on mobile, right rail on desktop), and non-active slides render invisible metadata placeholders to keep slide height stable during swipe.
+- Close interactions (backdrop, Escape, close button) always clear selection with `setSelectedIndex(null)`.
+- While open, Tab/Shift+Tab are trapped and manually cycled in a fixed order: close (`X`) -> previous arrow -> next arrow -> close.
+- Lightbox open does not auto-focus controls; the first Tab press while open moves focus to close (`X`).
+- Previous/next toolbar buttons remain in keyboard order so the custom cycle can advance through both arrows.
+- Lightbox control buttons show the custom rounded-square selection border only for keyboard focus (`:focus-visible`), not for mouse click focus.
+- Keyboard focus styling preserves original icon/button color and opacity; only the border/outline treatment changes.
+- Focus border is rendered with outline + inset ring (not layout border), and `:focus-visible` explicitly keeps baseline button color/filter so keyboard focus does not brighten icons while mouse hover still brightens them.
+- Lightbox button slot applies compact control padding (`styles.button.padding = 4px`) so the focus square hugs close/arrow icons more tightly.
+- Metadata for the active slide mounts at `opacity: 0` and fades in once after slide motion plus a reduced buffer (`animation.swipe = 650ms` + `100ms`), using a `1000ms` opacity transition.
 
 Invariants
-- Overlay uses near-black backdrop (`bg-black/90`) and blur effect.
-- Artwork preview uses constrained dimensions (`max-h-[75vh]`, `max-w-5xl` container).
-- Metadata panel always includes title, medium, and year.
-- Side navigation arrows are shown on desktop (`md` and up) and hidden on mobile.
-- Side arrows stay static in position and invert to a white background with black icon on hover.
-- The preview image wrapper uses a full horizontal slide transition (`translate-x-full` / `-translate-x-full`) so next moves leftward and previous moves rightward.
-- Metadata block waits `500ms` after the new image appears, then fades in over `1000ms`.
+- Overlay uses a near-black backdrop (`rgba(0, 0, 0, 0.9)`) with subtle blur (`backdrop-filter: blur(4px)`), matching the pre-library visual weight.
+- Swipe gestures are enabled on touch devices by the lightbox library without custom touch handlers.
+- Previous/next navigation loops continuously (`carousel.finite = false`).
+- Metadata block is centered below the image on mobile and fixed to the right side on `md+` screens.
+- Non-active slides keep reserved metadata height via invisible placeholders, reducing vertical layout shifts before horizontal swipe.
+- `on.view` only commits state when the index actually changes, reducing avoidable render churn during slide transitions.
 
 Rationale
-- Co-locating modal state with card grid keeps interaction logic small and cohesive.
-- Full-viewport overlay prioritizes artwork detail without route transitions.
+- Library-managed gestures and keyboard behavior reduce custom modal maintenance.
+- Co-locating `selectedIndex` state with the grid keeps open/close behavior explicit and predictable.
 
 Lessons Learned
-- Keep key handlers and click handlers aligned so keyboard and mouse users get equivalent navigation flow.
+- Prefer purpose-built interaction libraries when behavior parity across desktop and mobile matters.

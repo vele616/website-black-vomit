@@ -7,6 +7,7 @@ Terms
 - Root Layout - Global wrapper in `src/app/layout.tsx` that sets metadata, fonts, dark theme shell, and persistent chrome.
 - Portfolio Grid - Client component in `src/components/PortfolioGrid.tsx` rendering artwork cards in masonry columns.
 - Lightbox - Full-screen modal in `PortfolioGrid` that previews selected artwork and metadata.
+- Yet Another React Lightbox - External gallery/lightbox package used by `PortfolioGrid` for swipe, keyboard, and backdrop-controlled fullscreen artwork browsing.
 - Masonry Engine - Custom virtualized masonry implementation in `src/components/custom/masonry.tsx`.
 - Social Links - Shared icon-link set in `src/components/SocialLinks.tsx` used in both header and footer.
 - Theme Tokens - CSS variables in `src/app/globals.css` exposed through Tailwind v4 `@theme inline`.

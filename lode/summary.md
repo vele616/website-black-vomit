@@ -1,6 +1,6 @@
 # Summary
 
-`website-petra` is currently a Next.js 16 App Router single-page shell where `src/app/layout.tsx` provides global metadata, font variables, and base styles while `src/app/page.tsx` composes a fixed `Header`, a placeholder `WIP` main area, and a `Footer`; the page uses a `min-h-screen flex-col` wrapper with `main` set to `flex-1`, so the footer stays pinned to the bottom when content is short.
+`website-petra` is a Next.js 16 App Router portfolio site where `src/app/layout.tsx` provides global metadata, font variables, shared chrome (`Header`, `Footer`, `Toaster`), and global styles (including `yet-another-react-lightbox` CSS), while `src/app/page.tsx` renders the masonry-based `PortfolioGrid` experience and `/about` provides artist context content.
 
 Related
 - [Terminology](terminology.md)
@@ -10,28 +10,23 @@ Related
 
 ```mermaid
 graph TD
-  Layout["src/app/layout.tsx"] --> Page["src/app/page.tsx"]
-  Page --> Header["src/components/Header.tsx"]
-  Page --> Footer["src/components/Footer.tsx"]
+  Layout["src/app/layout.tsx"] --> Header["src/components/Header.tsx"]
+  Layout --> Page["src/app/page.tsx"]
+  Layout --> Footer["src/components/Footer.tsx"]
+  Page --> PortfolioGrid["src/components/PortfolioGrid.tsx"]
   Layout --> Globals["src/app/globals.css"]
 ```
 
 ```tsx
 export default function Home() {
-  return (
-    <div className="flex min-h-screen flex-col bg-zinc-50 font-sans dark:bg-black">
-      <Header />
-      <main className="flex flex-1 items-center justify-center pt-20">WIP</main>
-      <Footer />
-    </div>
-  );
+  return <PortfolioGrid />;
 }
 ```
 
 Invariants
 - App routing uses App Router files under `src/app/`.
 - Root metadata title is `Black Vomit`; favicon and apple-touch metadata icons both point to `/favicon.ico`.
-- Page composition currently happens in `src/app/page.tsx` (not in root layout).
+- Shared chrome composition happens in `src/app/layout.tsx`, while route files render route-specific content.
 - Header is fixed to the top and controls mobile navigation open/close state locally.
-- Footer renders social icon links and a 2026 copyright line.
-- Footer placement is enforced by page-level vertical flex layout (`flex-col` + `main.flex-1`).
+- Home route is the artwork portfolio grid with a full-screen lightbox experience.
+- Footer renders social icon links and a 2026 copyright line on every route.

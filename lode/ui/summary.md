@@ -1,6 +1,6 @@
 # UI Summary
 
-The UI is a dark-themed portfolio experience with persistent header/footer chrome, a masonry artwork grid on `/`, and an artist biography section on `/about`; navigation is route-based (not in-page anchors), and social/contact entry points are icon-only links reused across both header and footer.
+The UI is a dark-themed portfolio experience with persistent header/footer chrome, a masonry artwork grid on `/`, and an artist biography section on `/about`; navigation is route-based (not in-page anchors), social/contact entry points are icon-only links reused across both header and footer, and artwork preview uses `yet-another-react-lightbox` for swipe-friendly fullscreen browsing.
 
 Related
 - [../summary.md](../summary.md)
@@ -34,5 +34,5 @@ Invariants
 - Header and footer render on all routes because they are mounted in root layout.
 - Desktop nav links are visible from `md` and up; mobile nav is a toggleable fixed panel.
 - Home route always renders artwork cards via `artworks.map(...)`.
-- Artwork click opens a full-screen modal that can close via backdrop click or close button.
+- Artwork click opens `yet-another-react-lightbox` with looped previous/next navigation and touch swipe support.
 - Footer always renders social icons and ownership text.

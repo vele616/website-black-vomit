@@ -1,6 +1,6 @@
 # Tooling and Build
 
-The project is built with Next.js 16 + React 19 + TypeScript 5, uses Tailwind v4 through PostCSS, and runs linting through flat-config ESLint with Next core-web-vitals and TypeScript presets.
+The project is built with Next.js 16 + React 19 + TypeScript 5, uses Tailwind v4 through PostCSS, and runs linting through flat-config ESLint with Next core-web-vitals and TypeScript presets; UI behavior layers include `yet-another-react-lightbox` for fullscreen gallery interactions.
 
 Related
 - [../summary.md](../summary.md)
