@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
         message: error || "Unknown error",
       }),
       {
-        status: error.statusCode,
+        status: 500,
       },
     );
   }
