@@ -33,7 +33,7 @@ export const ConfirmationEmailTemplate: React.FC<
       <Section>
         <Container className="mx-auto max-w-xl">
           <Text className="m-0! mt-2">Dear {name},</Text>
-          <Text className="m-0! mb-2">We have received Your request and will responde as soon as posible</Text>
+          <Text className="m-0! mb-2">We have received Your request and will respond as soon as possible</Text>
         </Container>
       </Section>
     </Tailwind>
