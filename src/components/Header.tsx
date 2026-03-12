@@ -9,6 +9,7 @@ import { SocialLinks } from "./SocialLinks";
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/propaganda" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function Header() {
