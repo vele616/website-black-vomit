@@ -3,12 +3,15 @@
 import { useEffect, useState, type SyntheticEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { usePathname } from "next/navigation";
+import { toast } from "sonner";
 
-type SubmitStatus = "idle" | "loading" | "success" | "error";
+type SubmitStatus = "idle" | "loading" | "error";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function NewsletterForm() {
+  const pathname = usePathname();
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
   const [consentError, setConsentError] = useState("");
@@ -72,8 +75,11 @@ export function NewsletterForm() {
         throw new Error(data.error || "Something went wrong.");
       }
 
-      setStatus("success");
-      setMessage(data.message || "Successfully subscribed.");
+      setStatus("idle");
+      setMessage("");
+      toast.success("Success!", {
+        description: "Your request was sent successfully.",
+      });
       setEmail("");
     } catch (error) {
       setStatus("error");
@@ -103,19 +109,10 @@ export function NewsletterForm() {
   }
 
   useEffect(() => {
-    if (status !== "success" || !message) {
-      return;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      setStatus("idle");
-      setMessage("");
-    }, 10000);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
-  }, [status, message]);
+    setStatus("idle");
+    setMessage("");
+    setConsentError("");
+  }, [pathname]);
 
   return (
     <form noValidate onSubmit={handleSubmit} className="w-full max-w-md space-y-3">
@@ -145,12 +142,8 @@ export function NewsletterForm() {
           <p
             role="status"
             aria-live="polite"
-            className={`min-h-4 px-1 pt-0.5 text-left text-xs ${
-              status === "error"
-                ? "text-red-500"
-                : status === "success"
-                  ? "text-muted-foreground"
-                  : "text-transparent"
+            className={`min-h-4 pt-0.5 text-left text-xs ${
+              status === "error" ? "text-red-500" : "text-transparent"
             }`}
           >
             {message || "\u00A0"}
@@ -166,7 +159,7 @@ export function NewsletterForm() {
         </Button>
       </div>
 
-      <div className="-mt-2 space-y-1">
+      <div className="-mt-[10px]">
         <div className="flex w-full items-center justify-start gap-2 text-xs text-muted-foreground">
           <Checkbox
             id="newsletter-consent"
@@ -175,12 +168,14 @@ export function NewsletterForm() {
             aria-label="Send me newsletters and occasional updates."
             className="h-4 w-4 rounded border-border/70 data-[state=checked]:bg-foreground data-[state=checked]:text-background"
           />
-          <span>Send me newsletters and occasional updates.</span>
+          <label htmlFor="newsletter-consent" className="cursor-pointer">
+            Send me newsletters and occasional updates.
+          </label>
         </div>
         <p
           role="status"
           aria-live="polite"
-          className={`min-h-4 px-1 pt-0.5 text-left text-xs ${
+          className={`min-h-4 pt-0.5 text-left text-xs ${
             consentError ? "text-red-500" : "text-transparent"
           }`}
         >

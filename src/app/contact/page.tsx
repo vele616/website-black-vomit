@@ -139,7 +139,7 @@ export default function Contact() {
                   />
                 </div>
 
-                <div>
+                <div className="-mt-[9px]">
                   <CustomCheckbox
                     setAgreed={handleAgreedChange}
                     agreed={agreed}
@@ -150,7 +150,7 @@ export default function Contact() {
                   />
                   <p
                     aria-live="polite"
-                    className="h-4 px-1 text-left text-sm text-red-500"
+                    className="h-5 text-left text-sm leading-5 text-red-500"
                   >
                     {consentError || "\u00A0"}
                   </p>

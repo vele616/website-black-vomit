@@ -60,7 +60,9 @@ export function InputField({
             onInput={resetError}
             className="text-white caret-white placeholder:text-muted-foreground/50 resize-none field-sizing-fixed rounded-none border-x-0 border-t-0 border-b-white bg-transparent px-0 shadow-none focus-visible:ring-0 focus-visible:border-b-white [&:-webkit-autofill]:[-webkit-text-fill-color:white] [&:-webkit-autofill]:shadow-[0_0_0px_1000px_#18181b_inset] [&:-webkit-autofill]:caret-[white]"
           />
-          <div className="h-4 text-sm text-red-500 p-1">{error}</div>
+          <p className="h-5 text-left text-sm leading-5 text-red-500">
+            {error || "\u00A0"}
+          </p>
         </div>
       </>
     );
@@ -87,7 +89,9 @@ export function InputField({
           type={type}
           spellCheck={false}
         />
-        <div className="h-4 text-sm text-red-500 py-1">{error}</div>
+        <p className="h-5 text-left text-sm leading-5 text-red-500">
+          {error || "\u00A0"}
+        </p>
       </div>
     </>
   );

@@ -31,9 +31,9 @@ export function CustomCheckbox({
           aria-label={label}
           className="h-4 w-4 rounded border-border/70 data-[state=checked]:bg-foreground data-[state=checked]:text-background"
         />
-        <span className="font-normal leading-relaxed">
+        <label htmlFor={id} className="cursor-pointer font-normal leading-relaxed">
           {label}
-        </span>
+        </label>
       </div>
     </div>
   );
