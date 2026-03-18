@@ -83,9 +83,11 @@ export function NewsletterForm() {
       setEmail("");
     } catch (error) {
       setStatus("error");
-      setMessage(
-        error instanceof Error ? error.message : "Failed to subscribe."
-      );
+      console.error("ERROR", error);
+      toast.error("An error occurred.", {
+        description:
+          "There was an error subscribing to the newslatter, please try again later.",
+      });
     }
   }
 
