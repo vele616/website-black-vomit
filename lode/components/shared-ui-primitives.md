@@ -1,6 +1,6 @@
 # Shared UI Primitives
 
-The project includes shadcn/radix-style UI primitives (`button`, `input`, `label`, `textarea`, `spinner`, `sonner`) plus shared helpers (`cn`, composed refs), some actively used and others staged for upcoming contact/form workflows.
+The project includes shadcn/radix-style UI primitives (`button`, `input`, `label`, `textarea`, `spinner`, `sonner`) plus shared helpers (`cn`, composed refs), with `InputField` composing `Input` and `Textarea` for contact-style forms.
 
 Related
 - [../ops/tooling-and-build.md](../ops/tooling-and-build.md)
@@ -21,12 +21,17 @@ const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme();
   return <Sonner theme={theme as ToasterProps["theme"]} {...props} />;
 };
+
+<Input
+  className="placeholder:text-muted-foreground/50 [&:-webkit-autofill]:[-webkit-text-fill-color:white] [&:-webkit-autofill]:shadow-[0_0_0px_1000px_#0a0a0a_inset]"
+/>
 ```
 
 Contracts
 - `cn(...)` combines `clsx` and `tailwind-merge` and is the standard class merging utility.
 - UI primitives should consume semantic token classes (`bg-background`, `text-foreground`, etc.).
 - `Toaster` theme follows the active `next-themes` value.
+- `InputField` placeholder tint is applied through `placeholder:*` classes, while autofill text legibility is scoped to `:-webkit-autofill` selectors so placeholder styling still renders.
 
 Invariants
 - `src/lib/utils.ts` is the primary utility path used via `@/lib/utils` alias.

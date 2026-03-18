@@ -1,6 +1,6 @@
 # Summary
 
-`website-petra` is a Next.js 16 App Router portfolio site where `src/app/layout.tsx` provides global metadata, font variables, shared chrome (`Header`, `Footer`, `Toaster`), and global styles (including `yet-another-react-lightbox` CSS), while `src/app/page.tsx` renders the masonry-based `PortfolioGrid` experience and `/about` provides artist context content.
+`website-petra` is a Next.js 16 App Router portfolio site where `src/app/layout.tsx` provides global metadata, font variables, shared chrome (`Header`, `Footer`, `Toaster`), and global styles (including `yet-another-react-lightbox` CSS), while `src/app/page.tsx` renders the masonry-based `PortfolioGrid`, `/propaganda` provides artist context content, `/contact` provides an inquiry form flow, and `/privacy-policy` serves legal/privacy copy linked from the global footer.
 
 Related
 - [Terminology](terminology.md)
@@ -14,6 +14,8 @@ graph TD
   Layout --> Page["src/app/page.tsx"]
   Layout --> Footer["src/components/Footer.tsx"]
   Page --> PortfolioGrid["src/components/PortfolioGrid.tsx"]
+  Layout --> Contact["src/app/contact/page.tsx"]
+  Layout --> Privacy["src/app/privacy-policy/page.tsx"]
   Layout --> Globals["src/app/globals.css"]
 ```
 
@@ -29,4 +31,6 @@ Invariants
 - Shared chrome composition happens in `src/app/layout.tsx`, while route files render route-specific content.
 - Header is fixed to the top and controls mobile navigation open/close state locally.
 - Home route is the artwork portfolio grid with a full-screen lightbox experience.
-- Footer renders social icon links and a 2026 copyright line on every route.
+- `src/app/propaganda/page.tsx` provides static artist biography + imagery content.
+- `src/app/contact/page.tsx` handles contact form submission and feedback toasts.
+- Footer renders social icon links, a privacy-policy route link, and a 2026 copyright line on every route.

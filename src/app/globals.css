@@ -126,6 +126,21 @@
     @apply bg-background text-foreground;
   }
 
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-text-fill-color: currentColor;
+    caret-color: currentColor;
+    -webkit-box-shadow: 0 0 0 1000px transparent inset;
+    transition: background-color 9999s ease-out;
+  }
+
   .yarl__button:focus-visible {
     outline: 1px solid rgba(255, 255, 255, 0.95) !important;
     outline-offset: 0 !important;

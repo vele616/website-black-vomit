@@ -1,6 +1,6 @@
 # Routing Summary
 
-Routing uses Next.js App Router with two active page routes: `/` for the portfolio grid and `/about` for artist biography content, both wrapped by a single root layout that contributes metadata and shared UI chrome.
+Routing uses Next.js App Router with four active page routes: `/` for the portfolio grid, `/propaganda` for artist biography content, `/contact` for inquiries/newsletter conversion flow, and `/privacy-policy` for legal/privacy copy, all wrapped by a single root layout that contributes metadata and shared UI chrome.
 
 Related
 - [../summary.md](../summary.md)
@@ -10,13 +10,16 @@ Related
 ```mermaid
 graph LR
   Root["src/app/layout.tsx"] --> Home["src/app/page.tsx -> /"]
-  Root --> About["src/app/about/page.tsx -> /about"]
+  Root --> Propaganda["src/app/propaganda/page.tsx -> /propaganda"]
+  Root --> Contact["src/app/contact/page.tsx -> /contact"]
+  Root --> Privacy["src/app/privacy-policy/page.tsx -> /privacy-policy"]
 ```
 
 ```ts
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  { label: "About", href: "/propaganda" },
+  { label: "Contact", href: "/contact" },
 ];
 ```
 
@@ -26,12 +29,14 @@ Contracts
 
 Invariants
 - `src/app/page.tsx` remains the home route entrypoint.
-- `/about` content is route-level static JSX with no client state.
+- `/propaganda` content is route-level static JSX with no client state.
+- `/contact` is a client route handling controlled submit/loading and toast feedback.
+- `/privacy-policy` content is static legal copy rendered in route-level JSX.
 - Navigation targets route paths, not in-page anchors.
 
 Rationale
-- Route-based navigation allows independent page composition for gallery and biography.
-- Keeping only two routes avoids complexity while content is still portfolio-first.
+- Route-based navigation allows independent page composition for gallery, biography, and legal content.
+- Keeping legal copy in a dedicated route keeps footer policy links simple and durable.
 
 Lessons Learned
 - Document nav intent as route links to prevent accidental reintroduction of anchor-based assumptions.
