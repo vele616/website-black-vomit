@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { usePathname } from "next/navigation";
 import { toast } from "sonner";
+import { InputField } from "./InputField";
 
 type SubmitStatus = "idle" | "loading" | "error";
 
@@ -117,7 +118,11 @@ export function NewsletterForm() {
   }, [pathname]);
 
   return (
-    <form noValidate onSubmit={handleSubmit} className="w-full max-w-md space-y-3">
+    <form
+      noValidate
+      onSubmit={handleSubmit}
+      className="w-full max-w-md space-y-3"
+    >
       <div className="space-y-1 text-left">
         <p className="text-sm uppercase tracking-[0.35em] text-muted-foreground">
           Newsletter
@@ -139,6 +144,13 @@ export function NewsletterForm() {
             required
             autoComplete="email"
             disabled={status === "loading"}
+            className="h-11 w-full rounded-full border border-border/70 bg-transparent px-4 text-sm text-foreground placeholder:text-muted-foreground outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-60"
+          />
+          <InputField
+            id="email"
+            type="email"
+            name="email"
+            placeholder="Email address"
             className="h-11 w-full rounded-full border border-border/70 bg-transparent px-4 text-sm text-foreground placeholder:text-muted-foreground outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-60"
           />
           <p
