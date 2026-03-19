@@ -11,54 +11,44 @@ import { toast } from "sonner";
 export default function Contact() {
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
-  const [consentError, setConsentError] = useState("");
 
-  const handleSubmit = useCallback(
-    async (e: SubmitEvent<HTMLFormElement>) => {
-      e.preventDefault();
+  const handleSubmit = useCallback(async (e: SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-      if (consentError) {
-        setConsentError("");
+    setIsLoading(true);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const payload = {
+      name: String(formData.get("name")),
+      email: String(formData.get("email")),
+      message: String(formData.get("message")),
+    };
+    try {
+      const res = await fetch("/api/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      if (res.status !== 200) {
+        const data = await res.json();
+        throw new Error(JSON.stringify(data.message));
       }
-
-      setIsLoading(true);
-      const form = e.currentTarget;
-      const formData = new FormData(form);
-      const payload = {
-        name: String(formData.get("name")),
-        email: String(formData.get("email")),
-        message: String(formData.get("message")),
-      };
-      try {
-        const res = await fetch("/api/send", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
-        if (res.status !== 200) {
-          const data = await res.json();
-          throw new Error(JSON.stringify(data.message));
-        }
-        toast.success("Success!", {
-          description: "Your request was sent successfully.",
-        });
-        form.reset();
-        setConsentError("");
-      } catch (error) {
-        console.error("ERROR", error);
-        toast.error("An error occurred.", {
-          description:
-            "There was an error submitting Your form, please try again later.",
-        });
-      } finally {
-        setConsentError("");
-        setIsLoading(false);
-      }
-    },
-    [consentError],
-  );
+      toast.success("Success!", {
+        description: "Your request was sent successfully.",
+      });
+      form.reset();
+    } catch (error) {
+      console.error("ERROR", error);
+      toast.error("An error occurred.", {
+        description:
+          "There was an error submitting Your form, please try again later.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   return (
     <section id="contact" className="scroll-mt-20 bg-background py-10 lg:py-12">
