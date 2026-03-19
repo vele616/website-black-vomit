@@ -62,6 +62,14 @@ export function InputField({
     [],
   );
 
+  const handleInputChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      resetError();
+      onValueChange?.(e.target.value);
+    },
+    [onValueChange, resetError],
+  );
+
   if (isTextArea) {
     return (
       <>
@@ -118,7 +126,7 @@ export function InputField({
           disabled={disabled}
           id={id}
           name={name}
-          onInput={resetError}
+          onChange={handleInputChange}
           onInvalid={handleError}
           placeholder={placeholder}
           required={isRequired}
