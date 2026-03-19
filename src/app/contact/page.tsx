@@ -14,75 +14,70 @@ export default function Contact() {
   const [isLoading, setIsLoading] = useState(false);
   const [consentError, setConsentError] = useState("");
 
-  const handleAgreedChange = useCallback((value: boolean) => {
-    setAgreed(value);
-    if (consentError) {
-      setConsentError("");
-    }
-  }, [consentError]);
-
-  const handleSubmit = useCallback(async (e: SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!agreed) {
-      setConsentError("This field is required.");
-      return;
-    }
-
-    if (consentError) {
-      setConsentError("");
-    }
-
-    setIsLoading(true);
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    const payload = {
-      name: String(formData.get("name")),
-      email: String(formData.get("email")),
-      message: String(formData.get("message")),
-    };
-    try {
-      const res = await fetch("/api/send", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-      if (res.status !== 200) {
-        const data = await res.json();
-        throw new Error(JSON.stringify(data.message));
+  const handleAgreedChange = useCallback(
+    (value: boolean) => {
+      setAgreed(value);
+      if (consentError) {
+        setConsentError("");
       }
-      toast.success("Success!", {
-        description: "Your request was sent successfully.",
-      });
-      form.reset();
-      setAgreed(false);
-      setConsentError("");
-    } catch (error) {
-      console.error("ERROR", error);
-      toast.error("An error occurred.", {
-        description:
-          "There was an error submitting Your form, please try again later.",
-      });
-    } finally {
-      setAgreed(false);
-      setConsentError("");
-      setIsLoading(false);
-    }
-  }, [agreed, consentError]);
+    },
+    [consentError],
+  );
+
+  const handleSubmit = useCallback(
+    async (e: SubmitEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      if (consentError) {
+        setConsentError("");
+      }
+
+      setIsLoading(true);
+      const form = e.currentTarget;
+      const formData = new FormData(form);
+      const payload = {
+        name: String(formData.get("name")),
+        email: String(formData.get("email")),
+        message: String(formData.get("message")),
+      };
+      try {
+        const res = await fetch("/api/send", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+        if (res.status !== 200) {
+          const data = await res.json();
+          throw new Error(JSON.stringify(data.message));
+        }
+        toast.success("Success!", {
+          description: "Your request was sent successfully.",
+        });
+        form.reset();
+        setAgreed(false);
+        setConsentError("");
+      } catch (error) {
+        console.error("ERROR", error);
+        toast.error("An error occurred.", {
+          description:
+            "There was an error submitting Your form, please try again later.",
+        });
+      } finally {
+        setAgreed(false);
+        setConsentError("");
+        setIsLoading(false);
+      }
+    },
+    [consentError],
+  );
 
   useEffect(() => {
     setAgreed(false);
     setConsentError("");
     setIsLoading(false);
   }, [pathname]);
-
-  const handleSubmitButtonClick = useCallback(() => {
-    if (!agreed) {
-      setConsentError("Please check the consent box.");
-    }
-  }, [agreed]);
 
   return (
     <section id="contact" className="scroll-mt-20 bg-background py-10 lg:py-12">
@@ -93,8 +88,8 @@ export default function Contact() {
               Get in touch
             </h2>
             <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground">
-              For inquiries or collaborations, please use the contact form.
-              Feel free to reach out and I&apos;ll get back to you as soon as
+              For inquiries or collaborations, please use the contact form. Feel
+              free to reach out and I&apos;ll get back to you as soon as
               possible.
             </p>
 
@@ -119,61 +114,65 @@ export default function Contact() {
               <div className="flex flex-col gap-2">
                 <div className="flex flex-col gap-2">
                   <InputField
-                    id={"name"}
-                    isRequired={true}
-                    label={"Name"}
-                    name={"name"}
-                    placeholder={"Your name"}
+                    key={`contact-name-${pathname}`}
+                    ariaLabel="Name"
                     className="py-3 px-0 rounded-none border-x-0 border-t-0 border-b-white shadow-none focus-visible:border-b-white"
+                    disabled={isLoading}
+                    id="name"
+                    isRequired={true}
+                    label="Name"
+                    name="name"
+                    placeholder="Your name"
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <InputField
-                    id={"email"}
+                    key={`contact-email-${pathname}`}
+                    ariaLabel="Email"
+                    className="py-3 px-0 rounded-none border-x-0 border-t-0 border-b-white shadow-none focus-visible:border-b-white"
+                    disabled={isLoading}
+                    id="email"
                     isRequired={true}
-                    label={"Email"}
-                    name={"email"}
+                    label="Email"
+                    name="email"
                     placeholder={"your@email.com"}
-                    type={"email"}
-                    className="py-3 px-0 rounded-none border-x-0 border-t-0 border-b-white shadow-none focus-visible:border-b-white"
+                    type="email"
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <InputField
-                    id={"message"}
+                    key={`contact-message-${pathname}`}
+                    ariaLabel="Message"
+                    className="py-3 px-0 rounded-none border-x-0 border-t-0 border-b-white shadow-none focus-visible:border-b-white"
+                    disabled={isLoading}
+                    id="message"
                     isRequired={true}
                     isTextArea={true}
-                    label={"Message"}
-                    name={"message"}
-                    placeholder={"Tell me about your project..."}
-                    className="py-3 px-0 rounded-none border-x-0 border-t-0 border-b-white shadow-none focus-visible:border-b-white"
+                    label="Message"
+                    name="message"
+                    placeholder="Tell me about your project..."
                   />
                 </div>
 
-                <div className="-mt-[9px]">
+                <div className="-mt-1 mb-5">
                   <CustomCheckbox
-                    setAgreed={handleAgreedChange}
+                    key={`contact-consent-${pathname}`}
                     agreed={agreed}
-                    label={
-                      "I consent to the processing of personal data for the purpose of responding to my inquiry."
-                    }
+                    disabled={isLoading}
                     id="consent"
+                    isRequired={true}
+                    label="I consent to the processing of personal data for the purpose of responding to my inquiry."
+                    name="consent"
+                    setAgreed={handleAgreedChange}
                   />
-                  <p
-                    aria-live="polite"
-                    className="h-5 text-left text-sm leading-5 text-red-500"
-                  >
-                    {consentError || "\u00A0"}
-                  </p>
                 </div>
 
                 <div>
                   <Button
                     type="submit"
                     variant="outline"
-                    onClick={handleSubmitButtonClick}
                     disabled={isLoading}
                     className="h-11 cursor-pointer rounded-full border-border/70 bg-transparent px-5 text-xs uppercase tracking-[0.3em] text-foreground shadow-none transition-colors hover:bg-foreground hover:text-background disabled:cursor-not-allowed"
                   >

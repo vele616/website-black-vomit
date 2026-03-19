@@ -1,22 +1,44 @@
-import { useCallback } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
+import { ChangeEvent, InvalidEvent, useCallback, useState } from "react";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
 
 type CustomCheckboxProps = {
   agreed: boolean;
   id: string;
-  setAgreed: (value: boolean) => void;
   label: string;
+  setAgreed: (value: boolean) => void;
+  disabled?: boolean;
+  isRequired?: boolean;
+  name?: string;
 };
 
 export function CustomCheckbox({
   agreed,
   id,
-  setAgreed,
   label,
+  setAgreed,
+  disabled = false,
+  isRequired = false,
+  name,
 }: CustomCheckboxProps) {
+  const [error, setError] = useState("");
+  const handleError = useCallback(
+    (e: InvalidEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      e.preventDefault();
+      const field = e.currentTarget;
+      if (field.validity.valueMissing) {
+        setError("Please check the consent box.");
+      }
+    },
+    [],
+  );
+
   const handleChange = useCallback(
-    (checked: boolean | "indeterminate") => {
-      setAgreed(checked === true);
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const field = e.currentTarget;
+      setAgreed(field.checked);
+      field.setCustomValidity("");
+      setError("");
     },
     [setAgreed],
   );
@@ -24,17 +46,28 @@ export function CustomCheckbox({
   return (
     <div className="flex flex-col">
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
-        <Checkbox
-          id={id}
+        <Input
+          aria-invalid={error !== ""}
           checked={agreed}
-          onCheckedChange={handleChange}
-          aria-label={label}
-          className="h-4 w-4 rounded border-border/70 data-[state=checked]:bg-foreground data-[state=checked]:text-background"
+          className={
+            "accent-white h-4 w-4 rounded border-border/70 data-[state=checked]:bg-foreground data-[state=checked]:text-background"
+          }
+          disabled={disabled}
+          id={id}
+          name={name}
+          onChange={handleChange}
+          onInvalid={handleError}
+          required={isRequired}
+          type="checkbox"
         />
-        <label htmlFor={id} className="cursor-pointer font-normal leading-relaxed">
+        <Label
+          htmlFor={id}
+          className="cursor-pointer font-normal! text-xs leading-relaxed items-center flex"
+        >
           {label}
-        </label>
+        </Label>
       </div>
+      <div className="h-4 text-sm text-red-500 pt-0.5">{error}</div>
     </div>
   );
 }
