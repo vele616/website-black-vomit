@@ -82,6 +82,7 @@ export function NewsletterForm() {
         description: "Your request was sent successfully.",
       });
       setEmail("");
+      setConsent(false);
     } catch (error) {
       setStatus("error");
       console.error("ERROR", error);
@@ -112,6 +113,7 @@ export function NewsletterForm() {
   }
 
   useEffect(() => {
+    setConsent(false);
     setStatus("idle");
     setMessage("");
     setConsentError("");
@@ -131,26 +133,18 @@ export function NewsletterForm() {
 
       <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
         <div className="w-full sm:flex-1">
-          <label htmlFor="email" className="sr-only">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            placeholder="Email address"
-            value={email}
-            onChange={(e) => handleEmailChange(e.target.value)}
-            required
-            autoComplete="email"
-            disabled={status === "loading"}
-            className="h-11 w-full rounded-full border border-border/70 bg-transparent px-4 text-sm text-foreground placeholder:text-muted-foreground outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-60"
-          />
           <InputField
             id="email"
             type="email"
             name="email"
             placeholder="Email address"
+            isRequired
+            value={email}
+            onValueChange={handleEmailChange}
+            autoComplete="email"
+            disabled={status === "loading"}
+            showError={false}
+            ariaLabel="Email"
             className="h-11 w-full rounded-full border border-border/70 bg-transparent px-4 text-sm text-foreground placeholder:text-muted-foreground outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-60"
           />
           <p

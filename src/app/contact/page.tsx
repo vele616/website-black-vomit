@@ -4,10 +4,12 @@ import { CustomCheckbox } from "@/components/CustomCheckbox";
 import { InputField } from "@/components/InputField";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { SubmitEvent, useCallback, useState } from "react";
+import { usePathname } from "next/navigation";
+import { SubmitEvent, useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function Contact() {
+  const pathname = usePathname();
   const [agreed, setAgreed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [consentError, setConsentError] = useState("");
@@ -64,9 +66,17 @@ export default function Contact() {
           "There was an error submitting Your form, please try again later.",
       });
     } finally {
+      setAgreed(false);
+      setConsentError("");
       setIsLoading(false);
     }
   }, [agreed, consentError]);
+
+  useEffect(() => {
+    setAgreed(false);
+    setConsentError("");
+    setIsLoading(false);
+  }, [pathname]);
 
   const handleSubmitButtonClick = useCallback(() => {
     if (!agreed) {

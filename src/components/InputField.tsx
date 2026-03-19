@@ -1,4 +1,10 @@
-import { InvalidEvent, useCallback, useState } from "react";
+import {
+  ChangeEvent,
+  InvalidEvent,
+  useCallback,
+  useState,
+  type InputHTMLAttributes,
+} from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
@@ -13,6 +19,12 @@ type InputFieldProps = {
   label?: string;
   type?: string;
   className?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
+  autoComplete?: InputHTMLAttributes<HTMLInputElement>["autoComplete"];
+  disabled?: boolean;
+  showError?: boolean;
+  ariaLabel?: string;
 };
 
 export function InputField({
@@ -24,6 +36,12 @@ export function InputField({
   label = "",
   type,
   className,
+  value,
+  onValueChange,
+  autoComplete,
+  disabled = false,
+  showError = true,
+  ariaLabel,
 }: InputFieldProps) {
   const [error, setError] = useState("");
 
@@ -44,6 +62,14 @@ export function InputField({
   const resetError = useCallback(() => {
     setError("");
   }, []);
+
+  const handleInputChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      resetError();
+      onValueChange?.(e.target.value);
+    },
+    [onValueChange, resetError],
+  );
 
   if (isTextArea) {
     return (
@@ -96,16 +122,22 @@ export function InputField({
           )}
           id={id}
           name={name}
-          onInput={resetError}
+          onChange={handleInputChange}
           onInvalid={handleError}
           placeholder={placeholder}
           required={isRequired}
           type={type}
           spellCheck={false}
+          value={value}
+          autoComplete={autoComplete}
+          disabled={disabled}
+          aria-label={ariaLabel}
         />
-        <p className="h-5 text-left text-sm leading-5 text-red-500">
-          {error || "\u00A0"}
-        </p>
+        {showError && (
+          <p className="h-5 text-left text-sm leading-5 text-red-500">
+            {error || "\u00A0"}
+          </p>
+        )}
       </div>
     </>
   );
