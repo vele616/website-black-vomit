@@ -27,6 +27,7 @@ Contracts
 
 Invariants
 - Policy page keeps a centered narrow reading width (`max-w-3xl`) with stacked sections.
+- Footer privacy link is anchored to the right in the bottom row and vertically aligned with the centered copyright text.
 - Heading hierarchy is fixed: `h1` page title with section-level `h2` headings.
 - Contact email in policy copy is `bv.dizajn@hotmail.com`.
 - Last updated date is rendered as `March 10, 2026`.

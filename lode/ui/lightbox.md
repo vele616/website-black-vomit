@@ -44,7 +44,7 @@ Contracts
 - Keyboard focus styling preserves original icon/button color and opacity; only the border/outline treatment changes.
 - Focus border is rendered with outline + inset ring (not layout border), and `:focus-visible` explicitly keeps baseline button color/filter so keyboard focus does not brighten icons while mouse hover still brightens them.
 - Lightbox button slot applies compact control padding (`styles.button.padding = 4px`) so the focus square hugs close/arrow icons more tightly.
-- Metadata for the active slide mounts at `opacity: 0` and fades in once after slide motion plus a reduced buffer (`animation.swipe = 650ms` + `100ms`), using a `1000ms` opacity transition.
+- Metadata for the active slide mounts at `opacity: 0` and fades in once after slide motion plus a reduced buffer (`animation.swipe = 650ms` + `100ms`), using a `1400ms` opacity transition.
 
 Invariants
 - Overlay uses a near-black backdrop (`rgba(0, 0, 0, 0.9)`) with subtle blur (`backdrop-filter: blur(4px)`), matching the pre-library visual weight.

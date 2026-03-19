@@ -1,12 +1,9 @@
-import { ChangeEvent, InvalidEvent, useCallback, useState } from "react";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
+import { useCallback } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type CustomCheckboxProps = {
   agreed: boolean;
   id: string;
-  isRequired?: boolean;
-  name: string;
   setAgreed: (value: boolean) => void;
   label: string;
 };
@@ -14,57 +11,30 @@ type CustomCheckboxProps = {
 export function CustomCheckbox({
   agreed,
   id,
-  isRequired,
-  name,
   setAgreed,
   label,
 }: CustomCheckboxProps) {
-  const [error, setError] = useState("");
-
-  const handleError = useCallback(
-    (e: InvalidEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const field = e.currentTarget;
-      field.setCustomValidity(" ");
-      if (field.validity.valueMissing) {
-        setError("This field is required.");
-      }
-    },
-    [],
-  );
-
   const handleChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const field = e.currentTarget;
-      setAgreed(field.checked);
-      field.setCustomValidity("");
-      setError("");
+    (checked: boolean | "indeterminate") => {
+      setAgreed(checked === true);
     },
     [setAgreed],
   );
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-row items-start gap-3">
-      <Input
-        id={id}
-        type="checkbox"
-        name={name}
-        required={isRequired}
-        checked={agreed}
-        aria-invalid={error !== ""}
-        className={
-          "mt-0.5 size-4 p-0 accent-brand-800 focus-visible:ring-1 focus-visible:ring-offset-1"
-        }
-        onInvalid={handleError}
-        onChange={handleChange}
+      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+        <Checkbox
+          id={id}
+          checked={agreed}
+          onCheckedChange={handleChange}
+          aria-label={label}
+          className="h-4 w-4 rounded border-border/70 data-[state=checked]:bg-foreground data-[state=checked]:text-background"
         />
-      <div>
-        <Label htmlFor={name} className="text-xs leading-relaxed text-white">
+        <label htmlFor={id} className="cursor-pointer font-normal leading-relaxed">
           {label}
-        </Label>
+        </label>
       </div>
-        </div>
-      <div className="h-4 text-sm text-red-500">{error}</div>
     </div>
   );
 }

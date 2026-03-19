@@ -1,6 +1,6 @@
 # Routing Summary
 
-Routing uses Next.js App Router with three active page routes: `/` for the portfolio grid, `/propaganda` for artist biography content, and `/privacy-policy` for legal/privacy copy, all wrapped by a single root layout that contributes metadata and shared UI chrome.
+Routing uses Next.js App Router with four active page routes: `/` for the portfolio grid, `/propaganda` for artist biography content, `/contact` for inquiries/newsletter conversion flow, and `/privacy-policy` for legal/privacy copy, all wrapped by a single root layout that contributes metadata and shared UI chrome.
 
 Related
 - [../summary.md](../summary.md)
@@ -11,6 +11,7 @@ Related
 graph LR
   Root["src/app/layout.tsx"] --> Home["src/app/page.tsx -> /"]
   Root --> Propaganda["src/app/propaganda/page.tsx -> /propaganda"]
+  Root --> Contact["src/app/contact/page.tsx -> /contact"]
   Root --> Privacy["src/app/privacy-policy/page.tsx -> /privacy-policy"]
 ```
 
@@ -18,6 +19,7 @@ graph LR
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/propaganda" },
+  { label: "Contact", href: "/contact" },
 ];
 ```
 
@@ -28,6 +30,7 @@ Contracts
 Invariants
 - `src/app/page.tsx` remains the home route entrypoint.
 - `/propaganda` content is route-level static JSX with no client state.
+- `/contact` is a client route handling controlled submit/loading and toast feedback.
 - `/privacy-policy` content is static legal copy rendered in route-level JSX.
 - Navigation targets route paths, not in-page anchors.
 

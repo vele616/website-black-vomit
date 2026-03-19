@@ -33,7 +33,11 @@ Contracts
 
 Invariants
 - Grid uses `columnWidth={420}` and `maxColumnCount={3}` with 24px column/row gaps.
-- Overlay metadata reveals on hover at `sm` and above, always visible on smaller screens.
+- Home grid top spacing follows page-section rhythm (`py-10 lg:py-12`) with no extra inner top offset (`pt-0`), matching About/Contact header-to-content spacing.
+- Overlay metadata reveals with a slow (`~1100ms`) opacity fade on hover at `sm` and above, always visible on smaller screens.
+- Hover state does not apply translate/scale transforms to cards or images.
+- Artwork cards use square corners (no border-radius) with `overflow-hidden` so image edges match the card frame.
+- Artwork cards render without a visible border stroke.
 - Card interactions are local client state only and do not mutate data source.
 - Opening a card sets a stable index that drives keyboard (`ArrowLeft`/`ArrowRight`), desktop side-arrow clicks, and mobile swipe navigation in the lightbox, with one shared full-width left/right slide transition plus synchronized metadata fade.
 

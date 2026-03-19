@@ -32,8 +32,10 @@ Contracts
 Invariants
 - Outer section uses `id="about"` and `scroll-mt-20`.
 - Content container max width is `max-w-350` with responsive horizontal padding.
+- About content wrapper uses reduced bottom padding (`pb-6`).
 - On large screens, left and right columns align to the top (`lg:items-start`).
 - Logo is displayed centered above the bio copy at a large visual size (`w-[31.2rem]`).
+- Artist portrait frame uses square corners (no border-radius).
 - Logo, bio copy, and portrait are all always rendered (no conditional logic).
 
 Rationale

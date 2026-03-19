@@ -3,18 +3,35 @@
 import { CustomCheckbox } from "@/components/CustomCheckbox";
 import { InputField } from "@/components/InputField";
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
-import { ArrowRight, Send } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { SubmitEvent, useCallback, useState } from "react";
 import { toast } from "sonner";
 
 export default function Contact() {
   const [agreed, setAgreed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [consentError, setConsentError] = useState("");
+
+  const handleAgreedChange = useCallback((value: boolean) => {
+    setAgreed(value);
+    if (consentError) {
+      setConsentError("");
+    }
+  }, [consentError]);
 
   const handleSubmit = useCallback(async (e: SubmitEvent<HTMLFormElement>) => {
-    setIsLoading(true);
     e.preventDefault();
+
+    if (!agreed) {
+      setConsentError("This field is required.");
+      return;
+    }
+
+    if (consentError) {
+      setConsentError("");
+    }
+
+    setIsLoading(true);
     const form = e.currentTarget;
     const formData = new FormData(form);
     const payload = {
@@ -39,6 +56,7 @@ export default function Contact() {
       });
       form.reset();
       setAgreed(false);
+      setConsentError("");
     } catch (error) {
       console.error("ERROR", error);
       toast.error("An error occurred.", {
@@ -48,26 +66,26 @@ export default function Contact() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [agreed, consentError]);
+
+  const handleSubmitButtonClick = useCallback(() => {
+    if (!agreed) {
+      setConsentError("Please check the consent box.");
+    }
+  }, [agreed]);
 
   return (
     <section id="contact" className="scroll-mt-20 bg-background py-10 lg:py-12">
-      <div className="mx-auto max-w-350 px-6 lg:px-10">
-        <div className="h-px bg-border" />
-      </div>
-      <div className="mx-auto max-w-350 px-6 py-20 lg:px-10 lg:py-28">
+      <div className="mx-auto max-w-350 px-6 pb-0 pt-0 lg:px-10 lg:pb-0 lg:pt-0">
         <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
           <div className="flex flex-col justify-center">
-            <p className="text-xs font-medium tracking-[0.25em] text-muted-foreground uppercase">
+            <h2 className="text-2xl font-bold tracking-tight text-balance text-white lg:text-3xl">
               Get in touch
-            </p>
-            <h2 className="mt-4 text-4xl font-bold tracking-tight text-balance text-white lg:text-5xl">
-              Let&apos;s work together
             </h2>
             <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground">
-              Interested in commissioning a piece, purchasing prints, or
-              collaborating on a project? I&apos;d love to hear from you. Fill
-              out the form and I&apos;ll get back to you within 48 hours.
+              For inquiries or collaborations, please use the contact form.
+              Feel free to reach out and I&apos;ll get back to you as soon as
+              possible.
             </p>
 
             <div className="mt-10 flex items-center gap-4">
@@ -79,7 +97,7 @@ export default function Contact() {
             </div>
             <a
               href="mailto:bv.design@hotmail.com"
-              className="group mt-4 flex items-center justify-center gap-2 text-sm font-medium text-white transition-colors hover:text-muted-foreground"
+              className="group mt-4 flex items-center justify-center gap-0 text-sm font-medium text-white transition-colors hover:text-muted-foreground"
             >
               bv.design@hotmail.com
               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
@@ -95,7 +113,7 @@ export default function Contact() {
                     isRequired={true}
                     label={"Name"}
                     name={"name"}
-                    placeholder={"Your full name"}
+                    placeholder={"Your name"}
                     className="py-3 px-0 rounded-none border-x-0 border-t-0 border-b-white shadow-none focus-visible:border-b-white"
                   />
                 </div>
@@ -124,30 +142,32 @@ export default function Contact() {
                   />
                 </div>
 
-                <CustomCheckbox
-                  setAgreed={setAgreed}
-                  agreed={agreed}
-                  name="consent"
-                  label={
-                    "I consent to the processing of personal data for the purpose of responding to my inquiry."
-                  }
-                  id="consent"
-                  isRequired={true}
-                />
+                <div className="-mt-[9px]">
+                  <CustomCheckbox
+                    setAgreed={handleAgreedChange}
+                    agreed={agreed}
+                    label={
+                      "I consent to the processing of personal data for the purpose of responding to my inquiry."
+                    }
+                    id="consent"
+                  />
+                  <p
+                    aria-live="polite"
+                    className="h-5 text-left text-sm leading-5 text-red-500"
+                  >
+                    {consentError || "\u00A0"}
+                  </p>
+                </div>
 
-                <div className="mt-2">
+                <div>
                   <Button
                     type="submit"
-                    className="group relative inline-flex items-center gap-3 bg-white px-8 py-4 text-sm font-medium tracking-[0.15em] text-black uppercase hover:text-white disabled:opacity-60 hover:border-white hover:border"
+                    variant="outline"
+                    onClick={handleSubmitButtonClick}
+                    disabled={isLoading}
+                    className="h-11 cursor-pointer rounded-full border-border/70 bg-transparent px-5 text-xs uppercase tracking-[0.3em] text-foreground shadow-none transition-colors hover:bg-foreground hover:text-background disabled:cursor-not-allowed"
                   >
-                    {isLoading ? (
-                      <Spinner />
-                    ) : (
-                      <div className="flex gap-3">
-                        <span>Send Message</span>
-                        <Send className="self-center h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                      </div>
-                    )}
+                    {isLoading ? "Submitting..." : "Send Message"}
                   </Button>
                 </div>
               </div>

@@ -14,7 +14,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
 }) => (
   <Section>
     <Container>
-      <Heading as="h1">New message form website</Heading>
+      <Heading as="h1">New message from the website</Heading>
       <Text>A new inquiry has been received via the contact form.</Text>
       <Hr />
       <Text>Name: {name}</Text>

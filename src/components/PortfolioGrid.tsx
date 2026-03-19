@@ -40,7 +40,7 @@ function LightboxMetadata({
 
   return (
     <div
-      className={`text-center transition-opacity duration-[1000ms] ease-out md:text-left ${className ?? ""} ${isVisible ? "opacity-100" : "opacity-0"}`}
+      className={`text-center transition-opacity duration-[1400ms] ease-out md:text-left ${className ?? ""} ${isVisible ? "opacity-100" : "opacity-0"}`}
     >
       <h2 className="text-xl font-medium text-white">{title}</h2>
       <p className="mt-1 text-sm text-white/60">{medium}</p>
@@ -152,15 +152,14 @@ export function PortfolioGrid() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-background">
-        <div className="relative mx-auto max-w-350 px-4 pb-12 pt-16 lg:px-10">
-          <div className="mt-10">
-            <Masonry
-              columnWidth={420}
-              maxColumnCount={3}
-              gap={{ column: 24, row: 24 }}
-              className="min-h-[60vh]"
-            >
+      <section className="relative overflow-hidden bg-background py-10 lg:py-12">
+        <div className="relative mx-auto max-w-350 px-4 pb-12 pt-0 lg:px-10">
+          <Masonry
+            columnWidth={420}
+            maxColumnCount={3}
+            gap={{ column: 24, row: 24 }}
+            className="min-h-[60vh]"
+          >
               {artworks.map((artwork, index) => {
                 const aspectRatioFallback =
                   artwork.aspectRatio === "square"
@@ -178,7 +177,7 @@ export function PortfolioGrid() {
                     asChild
                   >
                     <button
-                      className="group relative w-full cursor-pointer overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+                      className="group relative w-full cursor-pointer overflow-hidden bg-card shadow-sm"
                       style={{ aspectRatio }}
                       onClick={() => setSelectedIndex(index)}
                       aria-label={`View ${artwork.title}`}
@@ -187,10 +186,10 @@ export function PortfolioGrid() {
                         src={artwork.src}
                         alt={artwork.alt}
                         fill
-                        className="h-auto w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                        className="h-auto w-full object-cover"
                         sizes="(max-width: 640px) 94vw, (max-width: 1024px) 70vw, (max-width: 1400px) 48vw, 33vw"
                       />
-                      <div className="pointer-events-none absolute inset-0 flex items-end bg-linear-to-t from-black/70 via-black/10 to-transparent opacity-100 transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100">
+                      <div className="pointer-events-none absolute inset-0 flex items-end bg-linear-to-t from-black/70 via-black/10 to-transparent opacity-100 transition-opacity duration-[1100ms] ease-out sm:opacity-0 sm:group-hover:opacity-100">
                         <div className="p-4 text-left">
                           <p className="text-sm font-medium text-white">
                             {artwork.title}
@@ -207,8 +206,7 @@ export function PortfolioGrid() {
                   </MasonryItem>
                 );
               })}
-            </Masonry>
-          </div>
+          </Masonry>
         </div>
       </section>
       <Lightbox

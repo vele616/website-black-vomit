@@ -20,6 +20,8 @@ Domains
   - [Header Navigation](ui/header-navigation.md)
   - [Portfolio Grid](ui/portfolio-grid.md)
   - [Lightbox](ui/lightbox.md)
+  - [Contact Page](ui/contact-page.md)
+  - [Newsletter Form](ui/newsletter-form.md)
   - [About Page](ui/about-page.md)
   - [Privacy Policy Page](ui/privacy-policy-page.md)
 - Data
@@ -49,6 +51,8 @@ graph TD
   LodeMap --> HeaderNav["ui/header-navigation.md"]
   LodeMap --> PortfolioGrid["ui/portfolio-grid.md"]
   LodeMap --> Lightbox["ui/lightbox.md"]
+  LodeMap --> ContactPage["ui/contact-page.md"]
+  LodeMap --> NewsletterForm["ui/newsletter-form.md"]
   LodeMap --> AboutPage["ui/about-page.md"]
   LodeMap --> PrivacyPolicyPage["ui/privacy-policy-page.md"]
   LodeMap --> Data["data/artworks-catalog.md"]
