@@ -41,7 +41,7 @@ export function CustomCheckbox({
         <Input
           aria-invalid={error !== ""}
           className={
-            "accent-white h-4 w-4 rounded border-border/70 data-[state=checked]:bg-foreground data-[state=checked]:text-background"
+            "accent-white h-4 w-4 rounded border-border/70 checked:bg-foreground checked:text-background"
           }
           disabled={disabled}
           id={id}
