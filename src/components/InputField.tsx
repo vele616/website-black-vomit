@@ -88,7 +88,7 @@ export function InputField({
             required={isRequired}
             rows={5}
           />
-          <p className="h-5 text-left text-sm leading-5 pt-0.5 text-red-500">
+          <p className="h-5 text-left text-sm leading-5 pt-0.5 text-red-500 mb-1">
             {error}
           </p>
         </div>
