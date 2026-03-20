@@ -1,25 +1,40 @@
-import { InvalidEvent, useCallback, useState } from "react";
+import {
+  InputEvent,
+  InvalidEvent,
+  useCallback,
+  useState,
+  type InputHTMLAttributes,
+} from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
+import { cn } from "@/lib/utils";
 
 type InputFieldProps = {
   id: string;
-  isRequired?: boolean;
-  isTextArea?: boolean;
-  label: string;
   name: string;
   placeholder: string;
+  ariaLabel?: string;
+  autoComplete?: InputHTMLAttributes<HTMLInputElement>["autoComplete"];
+  className?: string;
+  disabled?: boolean;
+  isRequired?: boolean;
+  isTextArea?: boolean;
+  label?: string;
   type?: string;
 };
 
 export function InputField({
   id,
-  isRequired = false,
-  isTextArea = false,
-  label,
   name,
   placeholder,
+  ariaLabel,
+  autoComplete,
+  className,
+  disabled = false,
+  isRequired = false,
+  isTextArea = false,
+  label = "",
   type,
 }: InputFieldProps) {
   const [error, setError] = useState("");
@@ -38,30 +53,43 @@ export function InputField({
     [],
   );
 
-  const resetError = useCallback(() => {
-    setError("");
-  }, []);
+  const resetError = useCallback(
+    (e: InputEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const field = e.currentTarget;
+      field.setCustomValidity("");
+      setError("");
+    },
+    [],
+  );
 
   if (isTextArea) {
     return (
       <>
-        <Label htmlFor={name} className="text-sm font-medium text-muted-foreground">
+        <Label
+          htmlFor={name}
+          className="text-sm font-medium text-muted-foreground"
+        >
           {label}
           {isRequired && "*"}
         </Label>
         <div>
           <Textarea
+            aria-label={ariaLabel}
+            className={cn(
+              "text-white caret-white bg-transparent outline-none placeholder:text-muted-foreground/50 resize-none field-sizing-fixed rounded-none border-x-0 border-t-0 border-b-white px-0 shadow-none focus-visible:ring-0 focus-visible:border-b-white [&:-webkit-autofill]:[-webkit-text-fill-color:white] [&:-webkit-autofill]:shadow-[0_0_0px_1000px_#18181b_inset] [&:-webkit-autofill]:caret-[white]",
+              className,
+            )}
+            disabled={disabled}
             id={id}
             name={name}
-            placeholder={placeholder}
-            rows={5}
-            required={isRequired}
-            onInvalid={handleError}
             onInput={resetError}
-            className="text-white caret-white placeholder:text-muted-foreground/50 resize-none field-sizing-fixed rounded-none border-x-0 border-t-0 border-b-white bg-transparent px-0 shadow-none focus-visible:ring-0 focus-visible:border-b-white [&:-webkit-autofill]:[-webkit-text-fill-color:white] [&:-webkit-autofill]:shadow-[0_0_0px_1000px_#18181b_inset] [&:-webkit-autofill]:caret-[white]"
+            onInvalid={handleError}
+            placeholder={placeholder}
+            required={isRequired}
+            rows={5}
           />
-          <p className="h-5 text-left text-sm leading-5 text-red-500">
-            {error || "\u00A0"}
+          <p className="h-5 text-left text-sm leading-5 pt-0.5 text-red-500 mb-1">
+            {error}
           </p>
         </div>
       </>
@@ -70,27 +98,35 @@ export function InputField({
 
   return (
     <>
-      <Label
-        htmlFor={name}
-        className="text-sm font-medium text-muted-foreground uppercase"
-      >
-        {label}
-        {isRequired && "*"}
-      </Label>
+      {label && (
+        <Label
+          htmlFor={name}
+          className={"text-sm font-medium text-muted-foreground uppercase"}
+        >
+          {label}
+          {isRequired && "*"}
+        </Label>
+      )}
       <div>
         <Input
-          className="caret-white bg-transparent text-white outline-none transition-colors placeholder:text-muted-foreground/50 py-3 px-0 rounded-none border-x-0 border-t-0 border-b-white shadow-none focus-visible:ring-0 focus-visible:border-b-white [&:-webkit-autofill]:[-webkit-text-fill-color:white] [&:-webkit-autofill]:shadow-[0_0_0px_1000px_#0a0a0a_inset] [&:-webkit-autofill]:caret-[white]"
+          aria-label={ariaLabel}
+          autoComplete={autoComplete}
+          className={cn(
+            "text-white caret-white bg-transparent outline-none transition-colors placeholder:text-muted-foreground/50 focus-visible:ring-0 [&:-webkit-autofill]:[-webkit-text-fill-color:white] [&:-webkit-autofill]:shadow-[0_0_0px_1000px_#0a0a0a_inset] [&:-webkit-autofill]:caret-[white]",
+            className,
+          )}
+          disabled={disabled}
           id={id}
           name={name}
           onInput={resetError}
           onInvalid={handleError}
           placeholder={placeholder}
           required={isRequired}
-          type={type}
           spellCheck={false}
+          type={type}
         />
-        <p className="h-5 text-left text-sm leading-5 text-red-500">
-          {error || "\u00A0"}
+        <p className="h-5 text-left text-sm leading-5 pt-0.5 text-red-500">
+          {error}
         </p>
       </div>
     </>
