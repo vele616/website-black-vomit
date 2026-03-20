@@ -1,5 +1,5 @@
 import {
-  ChangeEvent,
+  InputEvent,
   InvalidEvent,
   useCallback,
   useState,
@@ -14,34 +14,28 @@ type InputFieldProps = {
   id: string;
   name: string;
   placeholder: string;
+  ariaLabel?: string;
+  autoComplete?: InputHTMLAttributes<HTMLInputElement>["autoComplete"];
+  className?: string;
+  disabled?: boolean;
   isRequired?: boolean;
   isTextArea?: boolean;
   label?: string;
   type?: string;
-  className?: string;
-  value?: string;
-  onValueChange?: (value: string) => void;
-  autoComplete?: InputHTMLAttributes<HTMLInputElement>["autoComplete"];
-  disabled?: boolean;
-  showError?: boolean;
-  ariaLabel?: string;
 };
 
 export function InputField({
   id,
   name,
   placeholder,
+  ariaLabel,
+  autoComplete,
+  className,
+  disabled = false,
   isRequired = false,
   isTextArea = false,
   label = "",
   type,
-  className,
-  value,
-  onValueChange,
-  autoComplete,
-  disabled = false,
-  showError = true,
-  ariaLabel,
 }: InputFieldProps) {
   const [error, setError] = useState("");
 
@@ -59,16 +53,13 @@ export function InputField({
     [],
   );
 
-  const resetError = useCallback(() => {
-    setError("");
-  }, []);
-
-  const handleInputChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      resetError();
-      onValueChange?.(e.target.value);
+  const resetError = useCallback(
+    (e: InputEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const field = e.currentTarget;
+      field.setCustomValidity("");
+      setError("");
     },
-    [onValueChange, resetError],
+    [],
   );
 
   if (isTextArea) {
@@ -83,20 +74,22 @@ export function InputField({
         </Label>
         <div>
           <Textarea
-            id={id}
-            name={name}
-            placeholder={placeholder}
-            rows={5}
-            required={isRequired}
-            onInvalid={handleError}
-            onInput={resetError}
+            aria-label={ariaLabel}
             className={cn(
               "text-white caret-white bg-transparent outline-none placeholder:text-muted-foreground/50 resize-none field-sizing-fixed rounded-none border-x-0 border-t-0 border-b-white px-0 shadow-none focus-visible:ring-0 focus-visible:border-b-white [&:-webkit-autofill]:[-webkit-text-fill-color:white] [&:-webkit-autofill]:shadow-[0_0_0px_1000px_#18181b_inset] [&:-webkit-autofill]:caret-[white]",
               className,
             )}
+            disabled={disabled}
+            id={id}
+            name={name}
+            onInput={resetError}
+            onInvalid={handleError}
+            placeholder={placeholder}
+            required={isRequired}
+            rows={5}
           />
-          <p className="h-5 text-left text-sm leading-5 text-red-500">
-            {error || "\u00A0"}
+          <p className="h-5 text-left text-sm leading-5 pt-0.5 text-red-500 mb-1">
+            {error}
           </p>
         </div>
       </>
@@ -116,28 +109,25 @@ export function InputField({
       )}
       <div>
         <Input
+          aria-label={ariaLabel}
+          autoComplete={autoComplete}
           className={cn(
             "text-white caret-white bg-transparent outline-none transition-colors placeholder:text-muted-foreground/50 focus-visible:ring-0 [&:-webkit-autofill]:[-webkit-text-fill-color:white] [&:-webkit-autofill]:shadow-[0_0_0px_1000px_#0a0a0a_inset] [&:-webkit-autofill]:caret-[white]",
             className,
           )}
+          disabled={disabled}
           id={id}
           name={name}
-          onChange={handleInputChange}
+          onInput={resetError}
           onInvalid={handleError}
           placeholder={placeholder}
           required={isRequired}
-          type={type}
           spellCheck={false}
-          value={value}
-          autoComplete={autoComplete}
-          disabled={disabled}
-          aria-label={ariaLabel}
+          type={type}
         />
-        {showError && (
-          <p className="h-5 text-left text-sm leading-5 text-red-500">
-            {error || "\u00A0"}
-          </p>
-        )}
+        <p className="h-5 text-left text-sm leading-5 pt-0.5 text-red-500">
+          {error}
+        </p>
       </div>
     </>
   );

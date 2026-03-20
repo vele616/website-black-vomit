@@ -21,7 +21,7 @@ export function Footer() {
             >
               Privacy Policy
             </Link>
-            <p className="text-xs tracking-wide text-muted-foreground">
+            <p className="text-xs tracking-wide text-muted-foreground -mb-0.5">
               {"© 2026 Black Vomit. All rights reserved."}
             </p>
           </div>
