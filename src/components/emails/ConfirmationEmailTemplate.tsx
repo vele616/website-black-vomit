@@ -33,7 +33,17 @@ export const ConfirmationEmailTemplate: React.FC<
       <Section>
         <Container className="mx-auto max-w-xl">
           <Text className="m-0! mt-2">Dear {name},</Text>
-          <Text className="m-0! mb-2">We have received Your request and will respond as soon as possible</Text>
+          <Text className="m-0! mb-2">
+            Thanks for reaching out — I&apos;ve received your message.
+          </Text>
+          <Text className="m-0! mb-2">
+           I&apos;ll get back to you within 24 hours. If you don&apos;t see a reply, please check your spam or junk folder.
+          </Text>
+          <Text className="m-0! mb-2">
+            This is an automated email, so replies are not monitored.
+          </Text>
+          <Text className="m-0!">Best,</Text>
+          <Text className="m-0!">BV</Text>
         </Container>
       </Section>
     </Tailwind>
