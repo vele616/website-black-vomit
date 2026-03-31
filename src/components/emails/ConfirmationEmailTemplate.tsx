@@ -31,20 +31,22 @@ export const ConfirmationEmailTemplate: React.FC<
     <Tailwind config={emailTailwindConfig}>
       <Heading as="h1">We&apos;ve received your message</Heading>
       <Section>
-        <Container className="mx-auto max-w-xl">
-          <Text className="m-0! mt-2">Dear {name},</Text>
-          <Text className="m-0! mb-2">
-            Thanks for reaching out — I&apos;ve received your message.
-          </Text>
-          <Text className="m-0! mb-2">
-           I&apos;ll get back to you within 24 hours. If you don&apos;t see a reply, please check your spam or junk folder.
-          </Text>
-          <Text className="m-0! mb-2">
-            This is an automated email, so replies are not monitored.
-          </Text>
-          <Text className="m-0!">Best,</Text>
-          <Text className="m-0!">BV</Text>
-        </Container>
+        <Text className="m-0! mt-2">Dear {name},</Text>
+        <br />
+        <Text className="m-0! mb-2">
+          Thanks for reaching out — I&apos;ve received your message.
+        </Text>
+        <Text className="m-0! mb-2">
+          I&apos;ll get back to you within 24 hours. If you don&apos;t see a
+          reply, please check your spam or junk folder.
+        </Text>
+        <br />
+        <Text className="m-0! mb-2">
+          This is an automated email, so replies are not monitored.
+        </Text>
+        <br />
+        <Text className="m-0!">Best,</Text>
+        <Text className="m-0!">BV</Text>
       </Section>
     </Tailwind>
   </Html>
